@@ -1,2 +1,46 @@
+@import url('https://fonts.googleapis.com/css2?family=Bitcount+Prop+Single:wght@100..900&display=swap');
 @import "tailwindcss";
 
+#root {
+  display: grid;
+  height: 100dvh;
+  grid-template-rows: clamp(100px, 20dvw, 150px) auto;
+}
+
+header {
+  grid-row: 1;
+}
+
+main {
+  grid-row: 2;
+}
+
+@theme {
+  /* font family */
+  --font-bitcount: "Bitcount Prop Single";
+  /* font size */
+  --text-score-base: 1.5rem;
+  /* colors */
+  --color-poke-blue: #5fa3e5;
+  --color-semi-white: #fffff1;
+  /* box shadow */
+  --shadow-header: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  /* border-radius */
+  --round-figure: 13px;
+}
+
+@media screen and (width < 40rem) {
+  .game-logo {
+    width: 70px;
+  }
+
+  .score-section {
+    font-size: 18px;
+  }
+
+  .card-section {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(100px, 1fr));
+    grid-template-rows: repeat(4, minmax(100px, 1fr));
+  }
+}
