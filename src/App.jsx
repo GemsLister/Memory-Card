@@ -5,51 +5,66 @@ import { useEffect } from "react";
 
 function App() {
   const [score, setScore] = useState(0);
-  const [pokeDetails, setPokeDetails] = useState(null);
+  const [pokeDetails, setPokeDetails] = useState([]);
   const increaseScore = () => {
     setScore((prevScore) => prevScore + 1);
   };
-  let pokemons = [];
-
-  async function fetchData() {
-    const randomNumber = Math.floor(Math.random() * 300);
-    const response = await fetch(
-      `https://pokeapi.co/api/v2/pokemon/${randomNumber}`,
-      { mode: "cors" }
-    );
-    let pokeData = await response.json();
-    console.log(pokeData);
-    console.log(pokeData.sprites.front_default);
-
-    for (let i = 0; i < 12; i++) {
-      pokeData.id = randomNumber;
-      pokemons.push({
-        name: pokeData.name,
-        sprites: pokeData.sprites.front_default,
-        id: pokeData.id, 
-      });
-    }
-    setPokeDetails(pokemons);
-  }
 
   useEffect(() => {
-    fetchData();
+    let pokeIndexArray = [];
+    // Insert 12 numbers inside the pokeIndexArray
+    for (let i = 0; i < 12; i++) pokeIndexArray.push(i);
+
+    async function FetchData() {
+      let pokeArray = [];
+      let current = pokeIndexArray.length;
+      let random;
+
+      // Fisher-Yates shuffle algorithm to shuffle the array
+      while (current !== 0) {
+        random = Math.floor(Math.random() * current);
+        current--;
+        [pokeIndexArray[current], pokeIndexArray[random]] = [
+          pokeIndexArray[random],
+          pokeIndexArray[current],
+        ];
+
+        const response = await fetch(
+          `https://pokeapi.co/api/v2/pokemon/${pokeIndexArray[current] + 1}`,
+          { mode: "cors" }
+        );
+
+        let pokeData = await response.json();
+        // Push the pokemon data into the pokeArray
+        pokeArray.push({
+          name: pokeData.name.toUpperCase(),
+          // to store random pokemon sprites
+          sprites: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${
+            pokeIndexArray[current] + 1
+          }.png`,
+          id: pokeData.id,
+        });
+      }
+      setPokeDetails(pokeArray);
+      console.log(pokeArray);
+    }
+    FetchData();
     return () => {
-      console.log("clean");
+      console.log("Clean");
     };
   }, []);
 
   return (
     <>
       <header className="flex items-center justify-around bg-poke-blue shadow-header">
-        <img src={memodexLogo} alt="game-logo" className="game-logo sm:w-24" />
+        <img src={memodexLogo} alt="game-logo" className="game-logo sm:w-15 md:w-18 lg:w-22" />
         {/* score section */}
-        <section className="score-section font-bitcount text-score-base text-white">
+        <section className="score-section font-bitcount text-[1.5rem] text-white">
           <h1>Score: {score}</h1>
           <h1>High Score: 0</h1>
         </section>
       </header>
-      <main className="bg-semi-white">
+      <main className="flex justify-center">
         <CardsSection pokeDetails={pokeDetails} />
       </main>
     </>
