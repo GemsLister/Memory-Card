@@ -1,20 +1,52 @@
+import { useState, useEffect } from "react";
+
 export const CardsSection = ({ pokeDetails }) => {
+  const pokemonArray = [];
+  const [count, setCount] = useState(0);
+
+  const clickHandler = (pokeID) => {
+    let i = 0;
+    do {
+      // console.log(pokeID);
+      pokemonArray.push(pokeID);
+      if (pokemonArray[0] === pokeID) {
+        console.log("First Pokemon clicked");
+        break;
+      } 
+      else if (pokemonArray[0] !== pokeID) {
+        console.log("Second Pokemon clicked");
+        if (pokemonArray[0] === pokemonArray[1]) {
+          console.log("You found a match!");
+          setCount((prevCount) => prevCount + 1);
+        } else {
+          console.log("Not a match, try again!");
+        }
+        pokemonArray.length = 0; // Reset the array
+      }
+      i++;
+    } while (i < pokeDetails.length);
+  };
+
   return (
-    <section className="card-section sm:grid sm:grid-rows-3 sm:grid-cols-4 gap-3 place-items-center">
+    <section className="card-section sm:grid sm:grid-rows-4 sm:grid-cols-3 sm:gap-5 md:grid-rows-3 md:grid-cols-4 justify-items-center h-[100%] w-[100%] md:w-[95%] lg:w-[85%] sm:p-5 md:p-6">
       {pokeDetails &&
-        pokeDetails.map((img, idx) => {
+        pokeDetails.map((_sprites, index) => {
           return (
-            <figure
-              key={idx}
-              className="flex flex-col items-center justify-center bg-amber-400 rounded-[8px] md:w-[100%]"
+            <button
+              type="button"
+              key={index}
+              className="flex flex-col items-center justify-center bg-poke-bluegray rounded-[8px] sm:w-[100%] h-[100%] cursor-pointer hover:scale-105 transition-transform duration-300 ease-in-out hover:bg-poke-bluegray/80 active:bg-poke-bluegray/60 shadow-header text-poke-text"
+              onClick={() => clickHandler(_sprites.id)}
             >
               <img
-                src={img.sprites}
-                alt={`sprite-${idx}`}
-                className="sm:w-40"
+                src={_sprites.sprites}
+                alt={_sprites.name}
+                className="sm:w-[120px] md:w-[140px] lg:w-[180px]"
               />
-              <p>{img.name}</p>
-            </figure>
+              <p className="font-nunito font-[800] sm:pb-5 sm:text-[18.5px]">
+                {_sprites.name}
+              </p>
+            </button>
           );
         })}
     </section>
