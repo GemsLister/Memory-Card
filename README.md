@@ -4,7 +4,7 @@ A pokemon memory card game built with React and Tailwind CSS framework
 
 ## Features
 
-- Responsive desgin
+- Responsive design
 - Fun card game
 
 ## Getting Started
