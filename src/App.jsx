@@ -1,14 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import memodexLogo from "./assets/memodexLogo.png";
+import { ScoreSection } from "./components/ScoreSection.jsx";
 import { CardsSection } from "./components/CardsSection.jsx";
-import { useEffect } from "react";
 
 function App() {
-  const [score, setScore] = useState(0);
+  const [pokemonClicked, setPokemonClicked] = useState([]);
   const [pokeDetails, setPokeDetails] = useState([]);
-  const increaseScore = () => {
-    setScore((prevScore) => prevScore + 1);
-  };
 
   useEffect(() => {
     let pokeIndexArray = [];
@@ -59,13 +56,10 @@ function App() {
       <header className="flex items-center justify-around bg-poke-blue shadow-header">
         <img src={memodexLogo} alt="game-logo" className="game-logo sm:w-15 md:w-18 lg:w-22" />
         {/* score section */}
-        <section className="score-section font-bitcount text-[1.5rem] text-white">
-          <h1>Score: {score}</h1>
-          <h1>High Score: 0</h1>
-        </section>
+        <ScoreSection pokemonClicked={pokemonClicked} setPokemonClicked={setPokemonClicked} /> 
       </header>
       <main className="flex justify-center">
-        <CardsSection pokeDetails={pokeDetails} />
+        <CardsSection pokeDetails={pokeDetails} setPokemonClicked={setPokemonClicked} setPokeDetails={setPokeDetails} />
       </main>
     </>
   );
