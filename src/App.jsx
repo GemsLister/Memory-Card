@@ -7,6 +7,22 @@ function App() {
   const [pokemonClicked, setPokemonClicked] = useState([]);
   const [pokeDetails, setPokeDetails] = useState([]);
 
+  const getInitialScore = () => {
+    const savedScore = localStorage.getItem("scoreKey");
+    try {
+      return savedScore ? JSON.parse(savedScore) : 0;
+    } catch (e) {
+      console.error("Invalid score in localStorage:", savedScore);
+      return 0;
+    }
+  };
+
+  const [score, setScore] = useState(getInitialScore);
+
+  useEffect(() => {
+    localStorage.setItem("scoreKey", score);
+  }, [score]);
+
   useEffect(() => {
     let pokeIndexArray = [];
     // Insert 12 numbers inside the pokeIndexArray
@@ -54,12 +70,28 @@ function App() {
   return (
     <>
       <header className="flex items-center justify-around bg-poke-blue shadow-header">
-        <img src={memodexLogo} alt="game-logo" className="game-logo sm:w-15 md:w-18 lg:w-22" />
-        {/* score section */}
-        <ScoreSection pokemonClicked={pokemonClicked} setPokemonClicked={setPokemonClicked} /> 
+        <img
+          src={memodexLogo}
+          alt="game-logo"
+          className="game-logo sm:w-15 md:w-18 lg:w-22"
+        />
+        {/* Score section */}
+        <ScoreSection
+          setPokemonClicked={setPokemonClicked}
+          pokemonClicked={pokemonClicked}
+          score={score}
+          setScore={setScore}
+          pokeDetails={pokeDetails}
+        />
       </header>
       <main className="flex justify-center">
-        <CardsSection pokeDetails={pokeDetails} setPokemonClicked={setPokemonClicked} setPokeDetails={setPokeDetails} />
+        {/* Cards section */}
+        <CardsSection
+          pokeDetails={pokeDetails}
+          setPokemonClicked={setPokemonClicked}
+          setPokeDetails={setPokeDetails}
+          setScore={setScore}
+        />
       </main>
     </>
   );
