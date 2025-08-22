@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://github.com/GemsLister/Memory-Card.git",
+  "homepage": "https://gemslister.github.io/Memory-Card/",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
